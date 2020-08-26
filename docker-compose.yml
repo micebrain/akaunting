@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  mariadb:
+    restart: always
+    image: mariadb:10.5
+    environment:
+      MYSQL_ROOT_PASSWORD: testdb
+      MYSQL_DATABASE: akaunting
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: password
+    volumes:
+    - akaunting_db:/var/lib/mysql
+  
+  app:
+    image: akaunting
+    build:
+      context: .
+    env_file: 
+    - example.env
+    ports:
+    - "9008:9090"
+    depends_on:
+    - mariadb
+
+volumes:
+  akaunting_db: 
