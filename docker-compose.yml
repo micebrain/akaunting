@@ -17,11 +17,15 @@ services:
     build:
       context: .
     env_file: 
-    - example.env
+    - example.env    
     ports:
     - "9008:9090"
+    links:
+    - mariadb
     depends_on:
     - mariadb
+    volumes:
+    - ./example.env:/var/www/akaunting/.env
 
 volumes:
   akaunting_db: 
