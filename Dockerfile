@@ -1,6 +1,6 @@
 FROM alpine:3.12
 
-ARG AKAUNTING_VERSION=2.0.18
+ARG AKAUNTING_VERSION=2.0.19
 
 ENV USER=nobody \
     APP_DIR=/var/www/akaunting
@@ -26,6 +26,9 @@ RUN cd ${APP_DIR} \
 
 ADD docker/nginx/akaunting.conf /etc/nginx/conf.d/akaunting.conf
 ADD docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+ADD docker/entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
      
 WORKDIR ${APP_DIR}
 
@@ -33,6 +36,8 @@ EXPOSE 9090/tcp
 
 USER ${USER}
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
-
 HEALTHCHECK --timeout=20s CMD curl --silent --fail http://127.0.0.1:9090/fpm-ping
+
+ENTRYPOINT [ "/entrypoint.sh" ]
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
