@@ -16,6 +16,8 @@ services:
     image: akaunting
     build:
       context: .
+    environment:
+      APP_HOSTNAME: tikitaka.ch
     env_file: 
     - example.env    
     ports:
