@@ -17,14 +17,15 @@ RUN apk update && apk --no-cache add php7 php7-fpm php7-mysqli php7-phar \
     && chown -R ${USER} /run \
     && chown -R ${USER} /var/lib/nginx \
     && chown -R ${USER} /var/log/nginx \
-    && chown -R ${USER} /var/log/php7
+    && chown -R ${USER} /var/log/php7 \
+    && chown -R ${USER} /etc/nginx/conf.d
 
 RUN cd ${APP_DIR} \
     && wget "https://github.com/akaunting/akaunting/releases/download/${AKAUNTING_VERSION}/Akaunting_${AKAUNTING_VERSION}-Stable.zip" -O /tmp/Akaunting_${AKAUNTING_VERSION}-Stable.zip \
     && unzip /tmp/Akaunting_${AKAUNTING_VERSION}-Stable.zip \
     && chown -R ${USER} ${APP_DIR}
 
-ADD docker/nginx/akaunting.conf /etc/nginx/conf.d/akaunting.conf
+ADD docker/nginx/akaunting.conf /tmp/akaunting.conf
 ADD docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD docker/entrypoint.sh /entrypoint.sh
 
